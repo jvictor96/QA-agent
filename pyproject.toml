@@ -1,0 +1,49 @@
+[project]
+name = "langchain_project"
+version = "0.1.0"
+description = "Langchain Project"
+authors = [{ name = "Felipe Genú", email = "felipe.genu@marlo.com.au" }]
+requires-python = ">=3.12"
+readme = "README.md"
+
+dependencies = [
+  "langchain~=0.3.26",
+  "langchain-community~=0.3.27",
+  "langchain-core~=0.3.68",
+  "langchain-openai~=0.3.28",
+  "langchain-tests~=0.3.20",
+  "langgraph~=0.5.3",
+  "python-dotenv~=1.1.0",
+  "requests~=2.32",
+  "wikipedia~=1.4.0",
+]
+
+[dependency-groups]
+dev = [
+  "genbadge[tests]~=1.1",
+  "hypothesis~=6.75",
+  "jq~=1.6",
+  "pytest~=7.3",
+  "pytest-cov~=4.1",
+  "pytest-html~=3.2",
+  "ruff~=0.4",
+  "taplo~=0.9",
+  "yamllint~=1.32",
+  "anybadge~=1.14",
+  "pdoc~=13.1",
+]
+
+[project.urls]
+# Repository = "wip"
+# "Confluence Page" = "wip"
+
+# Build system configuration for uv
+# [build-system]
+# requires = ["uv>=0.1.17"]
+# build-backend = "uv_build"
+# backend-path = ["."]
+
+# Placeholder for any uv-specific configurations in the future
+[tool.uv]
+# Example:
+# native-tls = true

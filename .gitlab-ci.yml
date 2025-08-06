@@ -1,0 +1,31 @@
+---
+include:
+  - component: $CI_SERVER_FQDN/theMarloGroup/templates/pipelines/python-qa@main
+
+variables:
+  PACKAGE_NAME: "langchain-project"
+
+stages:
+  - validate
+  - test
+  - deploy
+
+default:
+  tags:
+    - build-runner
+
+run:
+  image: ${PYTHON_IMAGE}
+  stage: test
+  before_script:
+    - pip install uv
+    - uv sync
+    - source .venv/bin/activate
+  script:
+    - echo -e "hi\nexit" | timeout 20s python -m langchain_project
+  cache:
+    key:
+      files:
+        - uv.lock
+    paths:
+      - .venv

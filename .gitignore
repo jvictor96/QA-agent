@@ -1,0 +1,12 @@
+.*.swp
+.coverage
+.env
+.hypothesis/
+.idea/
+.ruff_cache/
+.venv/
+*.log
+*.swp
+**/__pycache__
+public/
+target/
