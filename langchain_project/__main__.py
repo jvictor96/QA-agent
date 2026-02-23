@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from langchain_core.runnables import RunnableConfig
 from .agents.chatbot_agent import ChatbotAgent
 
-CHATBOT_MODEL = "gpt-4.1-nano"
+CHATBOT_MODEL = "gpt-5-mini"
 
 
 def main():
@@ -27,14 +27,12 @@ def main():
     logger.info("Initializing chatbot with model: %s", CHATBOT_MODEL)
     chatbot = ChatbotAgent(model=CHATBOT_MODEL, logger=logger)
     config: RunnableConfig = {"configurable": {"thread_id": "1"}}
-    print("Type 'exit' to quit.")
-    while True:
-        user_input = input("You: ")
-        if user_input.strip().lower() == "exit":
-            logger.info("User left chat.")
-            break
-        logger.info("User input: %s", user_input)
-        chatbot.stream_response(user_input, config)
+    user_input = input("Absolute path of git project: ")
+    base_prompt = ""
+    with open("system_prompt.txt") as f:
+        base_prompt = f.read()
+    base_prompt += "\nAbsolute path to the git folder: f{user_input}"
+    chatbot.stream_response(user_input, config)
 
 
 def _parse_args():

@@ -1,0 +1,25 @@
+Use object calisthenics, SOLID and clean architecture to evaluate a working tree.
+The object calisthenics principles are:
+1. One level of indentation per method
+2. Don't use the ELSE keyword
+3. Wrap all primitives and Strings
+4. First class collections
+5. One dot per line
+6. Don't abbreviate
+7. Keep all entities small
+8. No classes with more than two instance variables
+9. No getters/setters/properties
+SOLID and Clean Architecture principles are:
+1. Domain classes don't know infrastructure, they receive it from a higher level
+2. infrastructure don't know business rules
+3. I/O code is declares as contracts, handled in the domain as abstractions, and implementations are unknown at the domain
+4. The dependency graph must be a DAG and flow from the domain package
+5. External dependences shouldn't be imported at the domain package
+Changes must be tested, every PR must make sure the changes are implemented or the issue fixed.
+The answer must highlight problems and possible solutions or missing code design that solves the issue:
+1. To use good named method to wrap behaviour instead of manually getting and setting properties
+2. To use map, filter and reduce to work with collections instread of using branching and manual aggregation
+3. To use polymorphism instead of branching
+Also use the diff size thermometer to evaluate the probable accuracy of the review and the overall quality of planning:
+less than 250 line probably good planning and good review
+more than 500 lines probably bad planning and review

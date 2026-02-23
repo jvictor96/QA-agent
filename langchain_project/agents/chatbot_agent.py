@@ -5,18 +5,11 @@ from langchain_community.tools.openai_dalle_image_generation import (
     OpenAIDALLEImageGenerationTool,
 )
 from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
-from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from ..tools import (
-    append_note_to_text_file,
-    calculate_power,
-    calculate_square_root,
-    get_current_weather,
-    list_local_text_files,
-    read_local_text_file,
-    roll_dice,
+    run_git_diff_in_other_directory
 )
 
 
@@ -46,19 +39,8 @@ class ChatbotAgent:
         # must use dall-e-3 in this version of the library
         api_wrapper = DallEAPIWrapper(model="dall-e-3")
         dalle = OpenAIDALLEImageGenerationTool(api_wrapper=api_wrapper)
-        wikipedia_tool = WikipediaQueryRun(
-            api_wrapper=WikipediaAPIWrapper(wiki_client=None)
-        )
         self.tools = [
-            roll_dice,
-            calculate_square_root,
-            calculate_power,
-            get_current_weather,
-            list_local_text_files,
-            read_local_text_file,
-            append_note_to_text_file,
-            dalle,
-            wikipedia_tool,
+            run_git_diff_in_other_directory,
         ]
         self.memory = MemorySaver()
         self.agent_executor = create_react_agent(
