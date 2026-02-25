@@ -1,0 +1,37 @@
+name: QA Agent
+
+on:
+  workflow_call:
+    inputs:
+      reasoning_model:
+        required: true
+        type: string
+    secrets:
+      OPENAI_API_KEY:
+        required: true
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.12
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install git
+      run: |
+        apt-get update
+        apt-get install -y git
+
+    - name: Install agent
+      run: pip install git+https://github.com/jvictor96/qa-agent@v0.1.0
+
+    - name: Run agent
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        REASONING_MODEL: ${{ inputs.reasoning_model }}
+        TARGET_BRANCH: origin/${{ github.base_ref }}
+      run: run-agent

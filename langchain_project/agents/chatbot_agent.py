@@ -9,7 +9,8 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from ..tools import (
-    run_git_diff_in_other_directory
+    run_git_diff_in_other_directory,
+    run_git_diff_between_branches_in_other_directory
 )
 
 
@@ -36,11 +37,9 @@ class ChatbotAgent:
         self.output = output_function
         self.logger.info("Initializing ChatbotAgent with model: %s", model)
         self.model = init_chat_model(model=model)
-        # must use dall-e-3 in this version of the library
-        api_wrapper = DallEAPIWrapper(model="dall-e-3")
-        dalle = OpenAIDALLEImageGenerationTool(api_wrapper=api_wrapper)
         self.tools = [
             run_git_diff_in_other_directory,
+            run_git_diff_between_branches_in_other_directory
         ]
         self.memory = MemorySaver()
         self.agent_executor = create_react_agent(

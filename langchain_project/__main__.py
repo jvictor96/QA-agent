@@ -27,12 +27,21 @@ def main():
     logger.info("Initializing chatbot with model: %s", CHATBOT_MODEL)
     chatbot = ChatbotAgent(model=CHATBOT_MODEL, logger=logger)
     config: RunnableConfig = {"configurable": {"thread_id": "1"}}
-    user_input = input("Absolute path of git project: ")
     base_prompt = ""
     with open("system_prompt.txt") as f:
         base_prompt = f.read()
-    base_prompt += "\nAbsolute path to the git folder: f{user_input}"
-    chatbot.stream_response(user_input, config)
+        git_path = input("Absolute path of git project: ")
+    branch = input("Branch (Default: worktree): ") or "worktree"
+
+    parts = [
+        base_prompt,
+        f"Path to the git folder: {git_path}",
+        f"Compare the HEAD with {branch}" if branch != "worktree" else "In the worktree"
+    ]
+
+    prompt = "\n".join(parts)
+    print("\n\nReview:")
+    chatbot.stream_response(prompt, config)
 
 
 def _parse_args():

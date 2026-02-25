@@ -1,10 +1,16 @@
 [project]
-name = "langchain_project"
+name = "qa-agent"
 version = "0.1.0"
-description = "Langchain Project"
-authors = [{ name = "Felipe Genú", email = "felipe.genu@marlo.com.au" }]
+description = "An AI agent with a few tools"
+authors = [
+{ name = "Felipe Genú", email = "felipe.genu@marlo.com.au" },
+{ name = "José Macedo", email = "jose.macedo@marlo.com.au" }
+]
 requires-python = ">=3.12"
 readme = "README.md"
+
+[project.scripts]
+run-agent = "your_agent.main:main"
 
 dependencies = [
   "langchain~=1.2.10",

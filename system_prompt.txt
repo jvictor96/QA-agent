@@ -1,4 +1,9 @@
-Use object calisthenics, SOLID and clean architecture to evaluate a working tree.
+Evaluate the changes in a repository and generate a report.Follow four steps in the evaluation.
+1. If you can't identify any purpose in the changes, such as adding features, improving perfomance or architecture, stop and report it.
+2. If the changes have more than one purpose for a single merge, suggest how they can be splited into more merges, each with its own purpuse.
+3. If the code seems to fail in implementing its purpose or if it has bugs and compilation errors, stop and repoort.
+4. Make a style/architectural report
+For the architectural repoort, use object calisthenics, SOLID and clean architecture to give small suggestions.
 The object calisthenics principles are:
 1. One level of indentation per method
 2. Don't use the ELSE keyword
@@ -20,6 +25,4 @@ The answer must highlight problems and possible solutions or missing code design
 1. To use good named method to wrap behaviour instead of manually getting and setting properties
 2. To use map, filter and reduce to work with collections instread of using branching and manual aggregation
 3. To use polymorphism instead of branching
-Also use the diff size thermometer to evaluate the probable accuracy of the review and the overall quality of planning:
-less than 250 line probably good planning and good review
-more than 500 lines probably bad planning and review
+4. To user linters and automated style checks
