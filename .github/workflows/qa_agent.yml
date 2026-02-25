@@ -6,6 +6,9 @@ on:
       reasoning_model:
         required: true
         type: string
+      target_branch:
+        required: true
+        type: string
     secrets:
       OPENAI_API_KEY:
         required: true
@@ -14,7 +17,7 @@ jobs:
   run-agent:
     runs-on: ubuntu-latest
     container:
-      image: python:3.12
+      image: python:3.10
 
     steps:
     - uses: actions/checkout@v4
@@ -33,5 +36,5 @@ jobs:
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         REASONING_MODEL: ${{ inputs.reasoning_model }}
-        TARGET_BRANCH: origin/${{ github.base_ref }}
+        TARGET_BRANCH: ${{ inputs.target_branch }}
       run: run-agent

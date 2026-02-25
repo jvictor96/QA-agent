@@ -1,8 +1,0 @@
-[run]
-omit =
-  */__init__.py
-  */tests/*
-  langchain_project/__main__.py
-
-[report]
-ignore_errors = True

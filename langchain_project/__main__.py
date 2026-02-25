@@ -3,60 +3,35 @@ This is a simple example of how to use the LangChain library to create a chatbot
 Based on documentation found at https://python.langchain.com/docs/integrations/chat/openai/ etc.
 """
 
-import argparse
-import logging
 import os
 
-from dotenv import load_dotenv
-from langchain_core.runnables import RunnableConfig
-from .agents.chatbot_agent import ChatbotAgent
+from langchain.agents import create_agent
+from langchain_openai import ChatOpenAI
+from langchain.messages import HumanMessage
+from tools import tools
 
-CHATBOT_MODEL = "gpt-5-mini"
-
+REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
+TARGET_BRANCH = os.environ.get("REASONING_MODEL", "main")
 
 def main():
-    args = _parse_args()
-    _setup_logging(debug=args.debug)
-    logger = logging.getLogger("chatbot")
-    load_dotenv()
-    if not os.environ.get("OPENAI_API_KEY"):
-        message = "OPENAI_API_KEY not found in environment. Please set it before running this program."
-        logger.error(message)
-        print("Error: " + message, flush=True)
-        exit(1)
-    logger.info("Initializing chatbot with model: %s", CHATBOT_MODEL)
-    chatbot = ChatbotAgent(model=CHATBOT_MODEL, logger=logger)
-    config: RunnableConfig = {"configurable": {"thread_id": "1"}}
+    model = ChatOpenAI(
+        model=REASONING_MODEL,
+        temperature=0.1,
+        max_tokens=1000,
+    )
+    agent = create_agent(model, tools=tools)
     base_prompt = ""
     with open("system_prompt.txt") as f:
         base_prompt = f.read()
-        git_path = input("Absolute path of git project: ")
-    branch = input("Branch (Default: worktree): ") or "worktree"
 
     parts = [
         base_prompt,
-        f"Path to the git folder: {git_path}",
-        f"Compare the HEAD with {branch}" if branch != "worktree" else "In the worktree"
+        f"Compare the HEAD with {TARGET_BRANCH}"
     ]
 
     prompt = "\n".join(parts)
     print("\n\nReview:")
-    chatbot.stream_response(prompt, config)
-
-
-def _parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--debug", action="store_true", help="Enable debug logging")
-    return parser.parse_args()
-
-
-def _setup_logging(debug=False):
-    level = logging.DEBUG if debug else logging.WARNING
-    logging.basicConfig(
-        filename="chatbot.log",
-        format="%(asctime)s [%(levelname)s] %(module)s: %(message)s",
-        level=level,
-    )
+    agent.invoke({"messages": [HumanMessage(prompt)]})
 
 
 if __name__ == "__main__":
