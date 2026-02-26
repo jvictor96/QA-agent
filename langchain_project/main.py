@@ -11,7 +11,7 @@ from langchain.messages import HumanMessage
 from langchain_project.tools import tools
 
 REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
-TARGET_BRANCH = os.environ.get("TARGET_BRANCH", "main")
+TARGET_BRANCH = os.environ.get("TARGET_BRANCH", "origin/main")
 PROMPT = """
 Evaluate the changes in a repository and generate a report.Follow four steps in the evaluation.
 1. If you can't identify any purpose in the changes, such as adding features, improving perfomance or architecture, stop and report it.
@@ -48,7 +48,6 @@ def main():
     model = ChatOpenAI(
         model=REASONING_MODEL,
         temperature=0.2,
-        max_tokens=1000,
     )
     agent = create_agent(model, tools=tools)
     base_prompt = PROMPT
