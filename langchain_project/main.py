@@ -8,7 +8,7 @@ import os
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
 from langchain.messages import HumanMessage
-from tools import tools
+from langchain_project.tools import tools
 
 REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
 TARGET_BRANCH = os.environ.get("REASONING_MODEL", "main")
