@@ -47,7 +47,7 @@ The answer must highlight problems and possible solutions or missing code design
 def main():
     model = ChatOpenAI(
         model=REASONING_MODEL,
-        temperature=0.1,
+        temperature=0.2,
         max_tokens=1000,
     )
     agent = create_agent(model, tools=tools)
@@ -60,7 +60,8 @@ def main():
 
     prompt = "\n".join(parts)
     print("\n\nReview:")
-    agent.invoke({"messages": [HumanMessage(prompt)]})
+    result = agent.invoke({"messages": [HumanMessage(prompt)]})
+    print(result)
 
 if __name__ == "__main__":
     main()
