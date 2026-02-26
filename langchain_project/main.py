@@ -11,7 +11,7 @@ from langchain.messages import HumanMessage
 from langchain_project.tools import tools
 
 REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
-TARGET_BRANCH = os.environ.get("REASONING_MODEL", "main")
+TARGET_BRANCH = os.environ.get("TARGET_BRANCH", "main")
 PROMPT = """
 Evaluate the changes in a repository and generate a report.Follow four steps in the evaluation.
 1. If you can't identify any purpose in the changes, such as adding features, improving perfomance or architecture, stop and report it.
