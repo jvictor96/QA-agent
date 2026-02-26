@@ -1,3 +1,4 @@
+import os
 import subprocess
 from langchain_core.tools import tool
 
@@ -9,6 +10,7 @@ def run_git_diff_between_branches(
     """
     Read the git diff between branches.
     """
+    repo_path = os.getenv("GITHUB_WORKSPACE", os.getcwd())
     cmd = ["git", "diff", "-U6"]
 
     if branch:
@@ -17,6 +19,7 @@ def run_git_diff_between_branches(
     try:
         result = subprocess.run(
             cmd,
+            cwd=repo_path,
             capture_output=True,
             text=True,
             check=True
