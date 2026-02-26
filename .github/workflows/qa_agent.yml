@@ -17,7 +17,7 @@ jobs:
   run-agent:
     runs-on: ubuntu-latest
     container:
-      image: python:3.10
+      image: python:3.12
 
     steps:
     - uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
         apt-get install -y git
 
     - name: Install agent
-      run: pip install git+https://github.com/jvictor96/qa-agent@v0.1.0
+      run: pip install git+https://github.com/jvictor96/qa-agent@main
 
     - name: Run agent
       env:
