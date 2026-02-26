@@ -47,7 +47,7 @@ The answer must highlight problems and possible solutions or missing code design
 def main():
     model = ChatOpenAI(
         model=REASONING_MODEL,
-        temperature=0.2,
+        temperature=0.08,
     )
     agent = create_agent(model, tools=tools)
     base_prompt = PROMPT
