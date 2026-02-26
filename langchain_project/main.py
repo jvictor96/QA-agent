@@ -33,3 +33,5 @@ def main():
     print("\n\nReview:")
     agent.invoke({"messages": [HumanMessage(prompt)]})
 
+if __name__ == "__main__":
+    main()
