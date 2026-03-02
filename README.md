@@ -1,47 +1,47 @@
-# langchain-project
+# QA agent
 
-## Prerequisites
-- Python 3
-- An OpenAI API key
+This agent is written using langchain, to make architectural and style reviews in pull requests changes.
 
-## Running through the CLI
+## Usage 
 
-### 1. Clone the project
+```yaml
+name: QA
 
-```bash
-git clone <repository-url>
-cd <repository-name>
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+
+jobs:
+  qa:
+    uses: jvictor96/QA-agent/.github/workflows/qa_agent.yml@main
+    permissions:
+        pull-requests: write
+    with:
+      reasoning_model: gpt-5-mini
+      target_branch: origin/master
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
-### 2. Set Up a Virtual Environment and Install Dependencies
+## Tools
 
-```bash
-uv sync
-```
+The official [github](https://github.com/github/github-mcp-server?tab=readme-ov-file#local-github-mcp-server) MCP server offers dozens of tools.
+As permissions should only encompas pull requests, the tools for this agent are:
 
-### 3. Set up .env file with the API keys from each service
+- add_comment_to_pending_review
+- add_reply_to_pull_request_comment
+- create_pull_request
+- list_pull_requests
+- merge_pull_request (which is not be available as the pull-request permissions doesn't allow)
+- pull_request_read
+- pull_request_review_write
+- search_pull_requests
+- update_pull_request
+- update_pull_request_branch
 
-```
-OPENAI_API_KEY="sk-proj-hL...8A"
-WEATHERSTACK_API_KEY="588...f20"
-```
 
-The `OPENAI_API_KEY` is mandatory; others may be optional.
+## About Permissions
 
-### 4. Run the Chatbot
+https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-pull-requests
 
-```bash
-python -m langchain_project
-```
-
-The chatbot will start in the terminal and prompt you for your OpenAI API key if it's not set in the `.env` file. You can then interact with the chatbot by typing messages. Type `exit` to quit.
-
-## Available Tools
-
-- Dice rolling
-- Math operations (square root, power)
-- Weather info
-- Simple file operations (list, read, append notes)
-- Image generation (DALL-E)
-- Wikipedia search
-- ... and more.
