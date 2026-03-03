@@ -29,14 +29,13 @@ jobs:
         apt-get update
         apt-get install -y git
 
+    - name: Download GitHub MCP Binary
+      run: |
+          curl -L -o github-mcp-server https://github.com
+          chmod +x github-mcp-server
+
     - name: Trust the repository
       run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
-    - name: Cache pip
-      uses: actions/cache@v5
-      with:
-        path: /github/home/.cache/pip
-        key: v1
 
     - name: Install agent
       run: pip install git+https://github.com/jvictor96/qa-agent@main

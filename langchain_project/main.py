@@ -3,12 +3,15 @@ This is a simple example of how to use the LangChain library to create a chatbot
 Based on documentation found at https://python.langchain.com/docs/integrations/chat/openai/ etc.
 """
 
+import asyncio
 import os
 
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
 from langchain.messages import HumanMessage
-from langchain_project.tools import tools
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+from langchain_mcp_adapters.tools import load_mcp_tools
 
 REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
 TARGET_BRANCH = os.environ.get("TARGET_BRANCH", "origin/main")
@@ -38,23 +41,37 @@ SOLID and Clean Architecture principles are:
 """
 
 
-def main():
+async def main():
     model = ChatOpenAI(
         model=REASONING_MODEL,
         temperature=0.1,
     )
-    agent = create_agent(model, tools=tools)
-    base_prompt = PROMPT
+    agent = None
+    tools = None
+    server_params = StdioServerParameters(
+        command="./github-mcp-server",
+        args=["--toolsets", "pull_requests", "stdio"],
+        env={
+            **os.environ,
+        }
+    )
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await load_mcp_tools(session)
+    
+            agent = create_agent(model, tools=tools)
+                    
+            base_prompt = PROMPT
+            parts = [
+                base_prompt,
+                f"Aim at the PR #1 at jvictor96/Python-Chess and submit a review recommending changes at specific lines, using the add comment on line resource."
+            ]
 
-    parts = [
-        base_prompt,
-        f"Compare the HEAD with {TARGET_BRANCH}"
-    ]
-
-    prompt = "\n".join(parts)
-    print("\n\nReview:")
-    result = agent.invoke({"messages": [HumanMessage(prompt)]})
-    print(result)
+            prompt = "\n".join(parts)
+            print("\n\nReview:")
+            result = await agent.ainvoke({"messages": [HumanMessage(prompt)]})
+            print(result)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
