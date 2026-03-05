@@ -21,8 +21,5 @@ dependencies = [
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["langchain_project", "langchain_project.tools"]
-
 [project.scripts]
 run-agent = "langchain_project.main:main"
