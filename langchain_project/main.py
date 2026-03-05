@@ -65,7 +65,7 @@ async def main():
             base_prompt = PROMPT
             parts = [
                 base_prompt,
-                f"Aim at the PR #1 at jvictor96/Python-Chess and submit a review recommending changes at specific lines, using the add comment on line resource."
+                f"Aim at the PR #1 at jvictor96/Python-Chess and submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource."
             ]
 
             prompt = "\n".join(parts)
