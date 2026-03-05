@@ -31,11 +31,9 @@ jobs:
 
     - name: Download GitHub MCP Binary
       run: |
-          curl -L -o github-mcp-server https://github.com
+          curl -L -o github-mcp-server.tar.gz https://github.com/github/github-mcp-server/releases/download/v0.31.0/github-mcp-server_Linux_x86_64.tar.gz
+          tar -xzf github-mcp-server.tar.gz
           chmod +x github-mcp-server
-
-    - name: Trust the repository
-      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
     - name: Install agent
       run: pip install git+https://github.com/jvictor96/qa-agent@main
