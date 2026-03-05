@@ -41,7 +41,10 @@ SOLID and Clean Architecture principles are:
 """
 
 
-async def main():
+def main():
+    asyncio.run(call_agent())
+
+async def call_agent():
     model = ChatOpenAI(
         model=REASONING_MODEL,
         temperature=0.1,
@@ -72,6 +75,3 @@ async def main():
             print("\n\nReview:")
             result = await agent.ainvoke({"messages": [HumanMessage(prompt)]})
             print(result)
-
-if __name__ == "__main__":
-    asyncio.run(main())
