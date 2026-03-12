@@ -69,7 +69,7 @@ async def call_agent():
             base_prompt = PROMPT
             parts = [
                 base_prompt,
-                f"Evaluate the diff in #{GITHUB_REF} at {GITHUB_ACTION_REPOSITORY} and submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource."
+                f"Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_ACTION_REPOSITORY}. Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource. If there are no suggestions, approve the pull request."
             ]
 
             prompt = "\n".join(parts)
