@@ -12,35 +12,24 @@ from langchain.messages import HumanMessage
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from langchain_mcp_adapters.tools import load_mcp_tools
+from reviewer import REVIEW_PROMPT
+from tester import TEST_PROMPT
+from issuer import ISSUER_PROMPT
 
 REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
-GITHUB_REF = os.environ.get("GITHUB_REF").split("/")[2]
-GITHUB_REPOSITORY = os.environ.get("GITHUB_REPOSITORY")
-PROMPT = """
-Evaluate the changes in a repository and generate a short report. Follow four steps in the evaluation.
-1. If you can't identify any purpose in the changes, such as adding features, improving perfomance or architecture, stop and report it.
-2. If the changes have more than one purpose for a single merge, suggest how they can be splited into more merges, each with its own purpuse.
-3. If the code seems to fail in implementing its purpose or if it has bugs and compilation errors, stop and repoort.
-4. Make a style/architectural report on violations. No need to report when there're no violation.
-For the architectural repoort, use object calisthenics, SOLID and clean architecture to give small suggestions.
-The object calisthenics principles are:
-1. One level of indentation per method
-2. Don't use the ELSE keyword
-3. Wrap all primitives and Strings
-4. First class collections
-5. One dot per line
-6. Don't abbreviate
-7. Keep all entities small
-8. No classes with more than two instance variables
-9. No getters/setters/properties
-SOLID and Clean Architecture principles are:
-1. Domain classes don't know infrastructure, they receive it from a higher level
-2. infrastructure don't know business rules
-3. I/O code is declares as contracts, handled in the domain as abstractions, and implementations are unknown at the domain
-4. The dependency graph must be a DAG and flow from the domain package
-5. External dependences shouldn't be imported at the domain package
-"""
+MODE = os.environ.get("MODE", "review")
 
+PROMPT = {
+    "review": REVIEW_PROMPT,
+    "issue_checker": ISSUER_PROMPT,
+    "test_analysis": TEST_PROMPT,
+}[MODE]
+
+TOOLS = {
+    "review": "pull_requests",
+    "issue_checker": "issues",
+    "test_analysis": "actions,issues,repos",
+}[MODE]
 
 def main():
     asyncio.run(call_agent())
@@ -50,11 +39,9 @@ async def call_agent():
         model=REASONING_MODEL,
         temperature=0.1,
     )
-    agent = None
-    tools = None
     server_params = StdioServerParameters(
         command="./github-mcp-server",
-        args=["--toolsets", "pull_requests", "stdio"],
+        args=["--toolsets", TOOLS, "stdio"],
         env={
             **os.environ,
         }
@@ -63,16 +50,8 @@ async def call_agent():
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = await load_mcp_tools(session)
-    
-            agent = create_agent(model, tools=tools)
-                    
-            base_prompt = PROMPT
-            parts = [
-                base_prompt,
-                f"Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_REPOSITORY}. Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource. If there are no suggestions, approve the pull request."
-            ]
 
-            prompt = "\n".join(parts)
+            agent = create_agent(model, tools=tools)
             print("\n\nReview:")
-            result = await agent.ainvoke({"messages": [HumanMessage(prompt)]})
+            result = await agent.ainvoke({"messages": [HumanMessage(PROMPT)]})
             print(result)
