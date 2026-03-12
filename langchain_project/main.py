@@ -15,6 +15,7 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 
 REASONING_MODEL = os.environ.get("REASONING_MODEL", "gpt-5-mini")
 GITHUB_REF = os.environ.get("GITHUB_REF").split("/")[2]
+GITHUB_ACTION_REPOSITORY = os.environ.get("GITHUB_ACTION_REPOSITORY")
 PROMPT = """
 Evaluate the changes in a repository and generate a short report. Follow four steps in the evaluation.
 1. If you can't identify any purpose in the changes, such as adding features, improving perfomance or architecture, stop and report it.
@@ -68,7 +69,7 @@ async def call_agent():
             base_prompt = PROMPT
             parts = [
                 base_prompt,
-                f"Evaluate the diff in {GITHUB_REF} and submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource."
+                f"Evaluate the diff in #{GITHUB_REF} at {GITHUB_ACTION_REPOSITORY} and submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource."
             ]
 
             prompt = "\n".join(parts)
