@@ -11,7 +11,7 @@ on:
         type: choice
         options:
           - review
-          - test_analisys
+          - test_analysis
         default: 'review'
     secrets:
       OPENAI_API_KEY:
