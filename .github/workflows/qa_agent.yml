@@ -8,10 +8,7 @@ on:
         type: string
       mode:
         required: false
-        type: choice
-        options:
-          - review
-          - test_analysis
+        type: string
         default: 'review'
     secrets:
       OPENAI_API_KEY:
