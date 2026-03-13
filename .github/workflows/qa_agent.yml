@@ -21,6 +21,8 @@ jobs:
       image: python:3.12
     permissions:
       pull-requests: write
+      issues: write
+      contents: read
 
     steps:
     - name: Download GitHub MCP Binary
