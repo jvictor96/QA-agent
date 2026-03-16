@@ -19,10 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: python:3.12
-    permissions:
-      pull-requests: write
-      issues: write
-      contents: read
+    permissions: write-all
 
     steps:
     - name: Download GitHub MCP Binary
