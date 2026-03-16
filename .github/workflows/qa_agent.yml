@@ -13,8 +13,6 @@ on:
     secrets:
       OPENAI_API_KEY:
         required: true
-      GITHUB_TOKEN:
-        required: true
 
 jobs:
   run-agent:
@@ -38,5 +36,5 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         REASONING_MODEL: ${{ inputs.reasoning_model }}
         MODE: ${{ inputs.mode }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: run-agent
