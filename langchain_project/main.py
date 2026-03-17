@@ -40,14 +40,11 @@ SOLID and Clean Architecture principles are:
 5. External dependences shouldn't be imported at the domain package
 Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_REPOSITORY}.
 Be assertive and avoid redundant outputs. Stop getting information about the code as soon as some reviews can be made. Don't dig the code more than necessary.
-Guidelines:
-- Use tools when the task requires external data, verification, or precise operations.
-- Do NOT use tools for general knowledge or simple reasoning.
-- Prefer answering directly when confident.
-
 Decision rule:
 - If the tool will significantly improve correctness → use it.
 - If the tool only slightly improves the answer → do NOT use it.
+- Prefer answering directly when confident.
+- Use the add comment on line resource to answer.
 Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource. If there are no suggestions, approve the pull request.
 """
 
