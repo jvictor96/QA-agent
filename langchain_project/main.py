@@ -17,31 +17,29 @@ GITHUB_REF = os.environ.get("GITHUB_REF").split("/")[2]
 GITHUB_REPOSITORY = os.environ.get("GITHUB_REPOSITORY")
 REVIEW_PROMPT = f"""
 Evaluate the changes in a repository and generate a short report. Follow four steps in the evaluation.
-1. If you can't identify any purpose in the changes, such as adding features, improving perfomance or architecture, stop and report it.
-2. If the changes have more than one purpose for a single merge, suggest how they can be splited into more merges, each with its own purpuse.
-3. If the code seems to fail in implementing its purpose or if it has bugs and compilation errors, stop and repoort.
-4. Make a style/architectural report on violations. No need to report when there're no violation.
-For the architectural repoort, use object calisthenics, SOLID and clean architecture to give small suggestions.
-The object calisthenics principles are:
+1. If you can't identify any purpose in the changes, such as adding features, improving performance or architecture, stop and report it.
+2. If the changes have more than one purpose for a single merge, suggest how they can be split into more merges, each with its own purpose.
+3. If the code seems to fail in implementing its purpose or if it has bugs and compilation errors, stop and report.
+4. Make a style/architectural report on violations. No need to report when there are no violations.
+For the architectural report, use object callisthenics, SOLID and clean architecture to give small suggestions.
+The object callisthenics principles are:
 1. Wrap all primitives and Strings
-2. First class collections
-3. One dot per line
-4. Don't abbreviate
-5. Keep all entities small
+2. One dot per line
+3. Don't abbreviate
+4. Keep all entities small
 SOLID and Clean Architecture principles are:
-1. Domain classes don't know infrastructure, they receive it from a higher level
-2. infrastructure don't know business rules
-3. I/O code is declares as contracts, handled in the domain as abstractions, and implementations are unknown at the domain
+1. Domain classes don't know infrastructure; they receive it from a higher level
+2. Infrastructure doesn't know business rules
+3. I/O code is declared as contracts, handled in the domain as abstractions, and implementations are unknown at the domain
 4. The dependency graph must be a DAG and flow from the domain package
-5. External dependences shouldn't be imported at the domain package
+5. External dependencies shouldn't be imported at the domain package
 Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_REPOSITORY}.
 Be assertive and avoid redundant outputs. Stop getting information about the code as soon as some reviews can be made. Don't dig the code more than necessary.
 Decision rule:
 - If the tool will significantly improve correctness → use it.
 - If the tool only slightly improves the answer → do NOT use it.
 - Prefer answering directly when confident.
-- Use the add comment on file resource to answer.
-Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on file resource. If there are no suggestions, approve the pull request.
+Then submit a review recommending changes, marking the PR assignee @ in comments. Use small comments instead of a single report. Use one comment per issue found at the diff.
 Please pay attention to the API parameters when using tools, as even small misuses can cause your job to fail. Fill every argument accordingly, respecting pre-established options when necessary..
 """
 
