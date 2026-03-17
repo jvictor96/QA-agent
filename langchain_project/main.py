@@ -95,7 +95,7 @@ async def call_agent():
             await session.initialize()
             tools = await load_mcp_tools(session)
 
-            agent = create_agent(model, tools=tools)
+            agent = create_agent(model, tools=tools, max_iterations=3)
             print("\n\nReview:")
             result = await agent.ainvoke({"messages": [HumanMessage(PROMPT)]})
             print(result)
