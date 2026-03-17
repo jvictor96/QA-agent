@@ -39,7 +39,6 @@ SOLID and Clean Architecture principles are:
 4. The dependency graph must be a DAG and flow from the domain package
 5. External dependences shouldn't be imported at the domain package
 Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_REPOSITORY}. 
-But, before making a review, delete any review of yourself that you haven't submitted yet.
 Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource. If there are no suggestions, approve the pull request.
 """
 
