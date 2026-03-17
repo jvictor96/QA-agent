@@ -6,7 +6,7 @@ Based on documentation found at https://python.langchain.com/docs/integrations/c
 import asyncio
 import os
 
-from langchain.agents import create_agent
+from langchain.agents import initialize_agent
 from langchain_openai import ChatOpenAI
 from langchain.messages import HumanMessage
 from mcp import ClientSession, StdioServerParameters
@@ -95,7 +95,7 @@ async def call_agent():
             await session.initialize()
             tools = await load_mcp_tools(session)
 
-            agent = create_agent(model, tools=tools, max_iterations=3)
+            agent = initialize_agent(tools, model, max_iterations=3)
             print("\n\nReview:")
             result = await agent.ainvoke({"messages": [HumanMessage(PROMPT)]})
             print(result)
