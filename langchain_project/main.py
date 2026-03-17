@@ -6,7 +6,7 @@ Based on documentation found at https://python.langchain.com/docs/integrations/c
 import asyncio
 import os
 
-from langchain.agents import initialize_agent
+from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
 from langchain.messages import HumanMessage
 from mcp import ClientSession, StdioServerParameters
@@ -38,7 +38,16 @@ SOLID and Clean Architecture principles are:
 3. I/O code is declares as contracts, handled in the domain as abstractions, and implementations are unknown at the domain
 4. The dependency graph must be a DAG and flow from the domain package
 5. External dependences shouldn't be imported at the domain package
-Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_REPOSITORY}. 
+Evaluate the diff in #{GITHUB_REF}. The owner and repo are {GITHUB_REPOSITORY}.
+Be assertive and avoid redundant outputs. Stop getting information about the code as soon as some reviews can be made. Don't dig the code more than necessary.
+Guidelines:
+- Use tools when the task requires external data, verification, or precise operations.
+- Do NOT use tools for general knowledge or simple reasoning.
+- Prefer answering directly when confident.
+
+Decision rule:
+- If the tool will significantly improve correctness → use it.
+- If the tool only slightly improves the answer → do NOT use it.
 Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource. If there are no suggestions, approve the pull request.
 """
 
@@ -81,7 +90,7 @@ def main():
 async def call_agent():
     model = ChatOpenAI(
         model=REASONING_MODEL,
-        temperature=0.1,
+        temperature=0,
     )
     server_params = StdioServerParameters(
         command="./github-mcp-server",
@@ -95,7 +104,7 @@ async def call_agent():
             await session.initialize()
             tools = await load_mcp_tools(session)
 
-            agent = initialize_agent(tools, model, max_iterations=3)
+            agent = create_agent(model, tools=tools)
             print("\n\nReview:")
             result = await agent.ainvoke({"messages": [HumanMessage(PROMPT)]})
             print(result)
