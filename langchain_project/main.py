@@ -40,9 +40,9 @@ Decision rule:
 - If the tool will significantly improve correctness → use it.
 - If the tool only slightly improves the answer → do NOT use it.
 - Prefer answering directly when confident.
-- Use the add comment on line resource to answer.
-Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on line resource. If there are no suggestions, approve the pull request.
-Pay attention to the tools' APIs, since any small misuse can make all the workflow to fail. Line definition must be precise, since commenting on absent lines also makes the workflow fail as a whole.
+- Use the add comment on file resource to answer.
+Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on file resource. If there are no suggestions, approve the pull request.
+Pay attention to the tools' APIs, since any small misuse can make all the workflow to fail.
 """
 
 TEST_PROMPT = f"""
