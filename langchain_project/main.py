@@ -42,7 +42,7 @@ Decision rule:
 - Prefer answering directly when confident.
 - Use the add comment on file resource to answer.
 Then submit a review recommending changes marking the PR assignee @ at specific lines, using the add comment on file resource. If there are no suggestions, approve the pull request.
-Pay attention to the tools' APIs, since any small misuse can make all the workflow to fail.
+Please pay attention to the API parameters when using tools, as even small misuses can cause your job to fail. Fill every argument accordingly, respecting pre-established options when necessary..
 """
 
 TEST_PROMPT = f"""
